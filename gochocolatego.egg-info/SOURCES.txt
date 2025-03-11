@@ -1,0 +1,13 @@
+README.md
+pyproject.toml
+chocolate/__init__.py
+chocolate/__main__.py
+chocolate/config.py
+chocolate/path.py
+chocolate/project_manager.py
+gochocolatego.egg-info/PKG-INFO
+gochocolatego.egg-info/SOURCES.txt
+gochocolatego.egg-info/dependency_links.txt
+gochocolatego.egg-info/entry_points.txt
+gochocolatego.egg-info/requires.txt
+gochocolatego.egg-info/top_level.txt
