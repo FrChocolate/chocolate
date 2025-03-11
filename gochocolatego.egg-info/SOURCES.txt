@@ -1,6 +1,5 @@
 README.md
 pyproject.toml
-setup.py
 chocolate/__init__.py
 chocolate/__main__.py
 chocolate/config.py

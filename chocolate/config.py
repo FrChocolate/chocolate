@@ -1,5 +1,5 @@
 from typing import Any
-from path import Path
+from .path import Path
 import json
 
 

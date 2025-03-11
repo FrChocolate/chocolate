@@ -3,8 +3,8 @@ import os
 import venv
 import sys
 import subprocess
-from path import Path
-from config import JsonConfig
+from .path import Path
+from .config import JsonConfig
 import time
 p = Path()
 

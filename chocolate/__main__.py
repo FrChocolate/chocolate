@@ -4,13 +4,13 @@ import argparse
 from rich.console import Console
 from rich.table import Table
 from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn
-from path import Path
-import project_manager as prj
+from .path import Path
+from . import project_manager as prj
 
 console = Console()
 
 
-def dict_to_table(data):
+def dict_to_table(data, *args):
     table = Table(show_header=False)
     for key, value in data.items():
         table.add_row(str(key), str(value))
@@ -46,7 +46,7 @@ def main():
             console.print('[black on red]Missing arguments.')
             quit(1)
         console.print('Creating a new project.')
-        prj.establish_project(args.name, args.main, [])
+        prj.establish_project(args.name, args.main, '')
         console.print('Project created successfully.')
 
     elif args.action == 'run':
@@ -72,6 +72,7 @@ def main():
             txt = f'[on red]App closed. [{time.time() - start:.2f}s]'
             console.print(
                 txt+'.'*(console.width-len(txt)))
+            console.print(err)
         else:
             txt = f'[on green]App closed. [{time.time() - start:.2f}s]'
             console.print(
@@ -147,7 +148,6 @@ def main():
     else:
         console.print('[on red]Wrong commands.')
 
-    
 
 if __name__ == "__main__":
     main()

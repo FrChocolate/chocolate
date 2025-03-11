@@ -12,7 +12,7 @@ Chocolate Project Manager (`pychocolate`) is a command-line tool for managing pr
 Install `pychocolate` via pip:
 
 ```sh
-pip install pychocolate
+pip install gochocolatego
 ```
 
 ## Usage
