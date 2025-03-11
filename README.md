@@ -57,6 +57,11 @@ chocolate reinstall
 chocolate flags --flag1 --flag2
 ```
 
+### Run-Quite (just run the code no logging)
+```sh
+chocolate run-quite
+```
+
 ## License
 This project is licensed under the MIT License.
 

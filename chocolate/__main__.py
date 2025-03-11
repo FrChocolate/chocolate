@@ -55,12 +55,8 @@ def main():
         env = project['run', 'env']
         console.print(f'[yellow]Initializing flags.')
         flags = project['run', 'flags']
-        console.print(f'[yellow]Setting up venv and installing requirements.')
+        console.print(f'[yellow]Setting up venv.')
         venv = prj.VenvManager('.venv')
-        for i in project['requirements']:
-            console.print(f'[yellow]Installing [green]{i}')
-            venv.install(i)
-            console.print(f'[green]{i} [yellow]installed.')
         console.print(f'[green]Running {project["run"]["startfile"]}.')
         start = time.time()
         txt = f'[on green]OUTPUT OF {project["run", "startfile"]}'
@@ -145,6 +141,13 @@ def main():
         raw_project['run']['flags'] = ' '.join(args.pkgs)
         Path()['.chocolate'] = raw_project
         console.print('[green]Flags updated.')
+    elif args.action == 'run-quite':
+        project = ensure_project()
+        env = project['run', 'env']
+        flags = project['run', 'flags']
+        venv = prj.VenvManager('.venv')
+        start = time.time()
+        venv.run(project['run', 'startfile'], flags, env)
     else:
         console.print('[on red]Wrong commands.')
 
