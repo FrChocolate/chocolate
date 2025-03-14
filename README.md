@@ -9,7 +9,7 @@ Chocolate Project Manager (`pychocolate`) is a command-line tool for managing pr
 - Manage environment variables and runtime flags
 
 ## Installation
-Install `pychocolate` via pip:
+Install chocolate with makefile
 
 ```sh
 pip install gochocolatego
@@ -57,9 +57,9 @@ chocolate reinstall
 chocolate flags --flag1 --flag2
 ```
 
-### Run-Quite (just run the code no logging)
+### Debugging
 ```sh
-chocolate run-quite
+chocolate debug
 ```
 
 ## License

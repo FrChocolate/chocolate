@@ -1,11 +1,12 @@
+import time
+from config import JsonConfig
+from path import Path
 import ast
 import os
 import venv
 import sys
 import subprocess
-from .path import Path
-from .config import JsonConfig
-import time
+
 p = Path()
 
 
@@ -17,14 +18,27 @@ def get_config():
 
 def establish_project(name, start, args, **env):
     p['.chocolate'] = {
-        "INFO": "CHOCOLATEPRJ",
+        "INFO": "CHOCOLATE PROJECT",
         "name": name,
         "created": time.time(),
         "requirements": [],
+        "ask_for": [],
+        "paths": {
+            "include": [start, "assets", "modules"],
+            "exclude": []
+        },
+        "private_env": [],
         "run": {"startfile": start,
                 "flags": args,
-                "env": dict(**env)}
+                "env": dict(**env)},
+        "actions": {}
     }
+    if not os.path.exists(start):
+        open(start, '+w').write('print("Hello, Chocolate!")')
+    if not os.path.exists('modules'):
+        os.mkdir('modules')
+    if not os.path.exists('assets'):
+        os.mkdir('assets')
 
 
 class VenvManager:

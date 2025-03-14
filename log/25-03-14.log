@@ -1,0 +1,4 @@
+2025-03-14 22:59:19,552 [from chocolate] __main__ - INFO - This is an info message
+2025-03-14 22:59:19,552 [from chocolate] __main__ - WARNING - This is a warning message
+2025-03-14 22:59:19,552 [from chocolate] __main__ - ERROR - This is an error message
+2025-03-14 22:59:19,552 [from chocolate] __main__ - CRITICAL - This is a critical message

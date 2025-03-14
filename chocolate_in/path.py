@@ -50,6 +50,11 @@ class Path:
     def __str__(self) -> str:
         return self.base
 
+    def __neg__(self):
+        if isfile(self.base):
+            return json.load(open(self.base, 'rb'))
+        raise FileNotFoundError(f"File not found: {self.base}")
+
     def __invert__(self):
         if isfile(self.base):
             mode = 'rb' if is_binary(self.base) else 'rt'

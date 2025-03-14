@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gochocolatego"
-version = "1.4"
+version = "1.4-1"
 authors = [{ name = "Chocolateisfr" }]
 description = "A project manager CLI tool."
 readme = "README.md"
