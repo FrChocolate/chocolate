@@ -2,11 +2,15 @@
 
 Chocolate Project Manager (`chocolate`) is a command-line tool for managing projects with virtual environments, dependencies, and environment variables.
 
+
+
 ## Features
 - Create new projects
 - Run projects with virtual environments
 - Add and reinstall dependencies
 - Manage environment variables and runtime flags
+
+> [Read the docs](DOCS.md)
 
 ## Installation
 Install chocolate with makefile
