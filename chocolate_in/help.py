@@ -70,8 +70,11 @@ def get(help_name):
 
 def ensure_help(args):
     if args.action == 'help':
+        help_text = ""
         for i in helps:
-            get(i)
+            help_text += helps[i] + '\n--- \n'
+        print(Panel(Markdown(
+            help_text, code_theme='dracula', inline_code_theme='dracula'), box.SQUARE))
         quit()
     if args.help:
         get(args.action)

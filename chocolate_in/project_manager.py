@@ -23,10 +23,7 @@ def establish_project(name, start, args, **env):
         "created": time.time(),
         "requirements": [],
         "ask_for": [],
-        "paths": {
-            "include": [start, "assets", "modules"],
-            "exclude": []
-        },
+        "exclude":[],
         "private_env": [],
         "run": {"startfile": start,
                 "flags": args,

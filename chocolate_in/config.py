@@ -12,35 +12,19 @@ def normalize_path(path):
     return path.rstrip('/')
 
 
-def create_zip_from_lists(zip_name, include, exclude):
-    """Create a ZIP file from included files, excluding specified files."""
-    # Normalize paths
-    include = [normalize_path(path) for path in include]
-    exclude = set(normalize_path(path) for path in exclude)
-
-    with zipfile.ZipFile(zip_name, 'w') as zip_file:
+def create_zip(name, include, exclude):
+    with zipfile.ZipFile(name, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for path in include:
-            if os.path.exists(path):
-                # If the path is a directory, include its contents
-                if os.path.isdir(path):
-                    for root, _, files in os.walk(path):
-                        for file in files:
-                            file_path = os.path.join(root, file)
-                            # Check if the file should be excluded
-                            if file_path not in exclude:
-                                # Add with relative path
-                                zip_file.write(file_path, os.path.relpath(
-                                    file_path, start=os.path.dirname(path)))
-                                print(f'Added {file_path} to {zip_name}')
-                else:
-                    # If it's a single file, just check for exclusion
-                    if os.path.basename(path) not in exclude:
-                        zip_file.write(path, os.path.basename(path))
-                        print(f'Added {path} to {zip_name}')
-                    else:
-                        print(f'Skipped {path} (excluded)')
-            else:
-                print(f'[red] {path} does not exist and cannot be added.')
+            if not os.path.exists(path):
+                print(f"Warning: {path} does not exist.")
+                continue
+            for root, dirs, files in os.walk(path):
+                if any(excl in root for excl in exclude):
+                    dirs[:] = []  
+                    continue
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    zipf.write(file_path, os.path.relpath(file_path, os.path.commonpath(include)))
 
 
 def ensure_folder(path):
