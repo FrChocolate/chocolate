@@ -13,7 +13,12 @@ Chocolate Project Manager (`chocolate`) is a command-line tool for managing proj
 > [Read the docs](DOCS.md)
 
 ## Installation
-Install chocolate with makefile
+
+### Installtion for arch
+
+
+
+### Installtion chocolate with makefile
 
 ```sh
 git clone https://github.com/frchocolate/chocolate
