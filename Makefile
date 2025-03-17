@@ -5,14 +5,14 @@ VENV_DIR = .venv
 SAFE_DIR = /opt/chocolate
 INSTALL_DIR = /usr/local/bin
 
-all: create-venv install-rich copy-app create-runner move-runner
+all: create-venv install-deps copy-app create-runner move-runner
 
 create-venv:
 	@python3 -m venv $(VENV_DIR)
 
-install-rich:
+install-deps:
 	@$(VENV_DIR)/bin/pip install --upgrade pip
-	@$(VENV_DIR)/bin/pip install rich
+	@$(VENV_DIR)/bin/pip install rich pytest
 
 copy-app:
 	@sudo rm -rf $(SAFE_DIR)

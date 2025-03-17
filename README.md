@@ -11,7 +11,9 @@ Chocolate Project Manager (`chocolate`) is a command-line tool for managing proj
 - Add and reinstall dependencies
 - Manage environment variables and runtime flags
 
-> [Read the docs](DOCS.md)
+> [Read the docs](DOCS.md) [🇺🇸]
+
+> [Read the docs](DOCSfa.md) [🇮🇷]
 
 ## Installation
 
@@ -32,6 +34,7 @@ make all
 ## Usage
 Run the `chocolate all` command to get started.
 
+## Cont
 
 ## License
 This project is licensed under the MIT License.

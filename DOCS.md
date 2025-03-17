@@ -15,7 +15,7 @@ chocolate <action> [options] [arguments]
 ## 📂 **Creating a New Project**
 
 ```bash
-chocolate new
+chocolate new <project name> <starter file name>
 ```
 
 
