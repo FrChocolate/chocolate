@@ -2,4 +2,4 @@
 -> This function is used for handling custom actions defined in the project.
 - Use `add <action_name> <command>` to add a new custom action.
 - Use `remove <action_name>` to remove a custom action.
-- Use `execute <action_name>` to run a custom action.
+- Use `<action_name>` to execute.

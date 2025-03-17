@@ -254,16 +254,16 @@ def custom_action(args):
             log.info("Adding a custom action.")
             if args.input:
                 args.pkgs.append(open(args.input).read())
-            project.config['actions'][args.pkgs[1]] = args.pkgs[2]
+            project.config['actionsScript'][args.pkgs[1]] = args.pkgs[2]
             path[CONFIG] = project.config
         elif args.pkgs[0] == 'remove':
             log.info("Removing a custom action.")
-            project.config['actions'].pop(args.pkgs[1])
+            project.config['actionsScript'].pop(args.pkgs[1])
             path[CONFIG] = project.config
         else:
             log.info("Executing custom actions: %s.", args.pkgs)
             for i in args.pkgs:
-                i = project['actions'][i].split('\n')
+                i = project['actionsScript'][i].split('\n')
                 for j in i:
                     os.system(j)
     except Exception as e:
@@ -337,7 +337,7 @@ def handle_config(args):
 
 
 def handle_version(args):
-    console.print('[blue]Chocolate [/blue](3.0.1-pre)')
+    console.print('[blue]Chocolate [/blue](3.0.2-final)')
 
 
 def export(args):
