@@ -1,9 +1,14 @@
-# Chocolate Project Manager
+<h1 align="center"> Chocolate Project Manager
+</h1>
+<h4 align="center">
+Chocolate Project Manager (chocolate) is a command-line tool for managing projects with virtual environments, dependencies, and environment variables.
+</h4>
 
-Chocolate Project Manager (`chocolate`) is a command-line tool for managing projects with virtual environments, dependencies, and environment variables.
 <p align="center">
-  <img src="assets/choco.png" alt="logo" width=256>
+  <img src="https://socialify.git.ci/frchocolate/chocolate/image?custom_description=A+Modern+Python+Project+Manager&description=1&font=Source+Code+Pro&forks=1&issues=1&language=1&name=1&owner=1&pattern=Circuit+Board&pulls=1&stargazers=1&theme=Dark" alt="logo">
 </p>
+
+
 
 ## Features
 - Create new projects
