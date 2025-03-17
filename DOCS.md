@@ -168,7 +168,17 @@ chocolate export -o <output.zip>
 ```bash
 chocolate help
 ```
-
+## Printing the config file
+```bash
+chocolate config
+```
+## Using sandbox
+You can use `chocolate sandbox` to limit the memory usage/ cpu time/ cpu freq of the project.
+> Note that manual error handling for these in the code is required, For example you should handle the memoryError for high memory usage
+```bash
+chocolate sandbox <Memory max usage in MB> <CPU max time in seconds> <Cpu max freq in MH>
+```
+You can use `-1` as unlimited.
 
 
 ## 🔥 **Examples**
@@ -193,10 +203,6 @@ chocolate reinstall
 chocolate export -o my_project.zip
 ```
 
-## Printing the config file
-```bash
-chocolate config
-```
 
 ## ✅ **Conclusion**
 

@@ -60,6 +60,13 @@ class VenvManager:
         """Run a script inside the virtual environment with optional flags."""
         command = [self.venv_python, file_name] + flags.split()
         return subprocess.run(command, check=True, env=env).returncode
+    
+    def run_sandbox(self, file_name, flags="", env={}, memory=-1, cpu_time=-1, freq=-1):
+        command = [self.venv_python, file_name ] + flags.split()
+        command = " ".join(command)
+        command = ["sudo", "choco-sandbox", command, memory, cpu_time, freq]
+        return subprocess.run(command, check=True, env=env).returncode
+    
 
 
 def find_python_files(directory):

@@ -358,6 +358,31 @@ def export(args):
         log.critical("Error during export: %s", e)
 
 
+def handle_sandbox(args):
+    """Running scripts in sandbox mode"""
+    log.info("Starting the run process as sandbox mode.")
+    ensure_env_variables()
+    project = get_project_config()
+    log.info("Running the startfile.")
+    if args.reinstall:
+        log.info("Reinstall flag detected, proceeding with reinstallation.")
+        handle_reinstall()
+    env = project['environmentVariables']
+    flags = project['flagsString']
+    venv = prj.VenvManager()
+    if len(args.pkgs) != 3:
+        log.critical('Usage `chocolate sandbox <memory limit in MB> <cpu time in seconds> <cpu freq in MH>`, Use -1 as unlimited.')
+        quit(1)
+    try:
+        log.info("Running the project startfile: %s.", project['mainFile'])
+        console.print(Markdown('---'))
+        venv.run_sandbox(project['mainFile'], flags, env, args.pkgs[0], args.pkgs[1], args.pkgs[2])
+        console.print(Markdown('---'))
+        log.info("Process finished.")
+
+    except Exception as e:
+        log.critical("Project execution failed. Error: %s", e)
+
 def main():
     """
     Main entry point for the Chocolate Project Manager.
@@ -390,7 +415,8 @@ def main():
         "ask_for": handle_ask,
         "remove": handle_remove,
         "config": handle_config,
-        "version": handle_version
+        "version": handle_version,
+        "sandbox": handle_sandbox
     }
 
     if args.action in actions or args.action == 'help':

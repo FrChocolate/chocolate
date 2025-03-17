@@ -5,7 +5,7 @@ VENV_DIR = .venv
 SAFE_DIR = /opt/chocolate
 INSTALL_DIR = /usr/local/bin
 
-all: create-venv install-deps copy-app create-runner move-runner
+all: sandbox create-venv install-deps copy-app create-runner move-runner
 
 create-venv:
 	@python3 -m venv $(VENV_DIR)
@@ -19,6 +19,7 @@ copy-app:
 	@sudo mkdir -p $(SAFE_DIR)
 	@sudo cp -r $(APP_DIR) $(SAFE_DIR)
 	@sudo cp -r $(VENV_DIR) $(SAFE_DIR)
+	@sudo cp -r choco-sandbox $(INSTALL_DIR)
 
 create-runner:
 	@echo "#!/bin/bash" > $(RUNNER_SCRIPT)
@@ -27,6 +28,11 @@ create-runner:
 
 move-runner:
 	@sudo mv $(RUNNER_SCRIPT) $(INSTALL_DIR)/$(RUNNER_SCRIPT)
+
+sandbox:
+	g++ -o choco-sandbox chocolate_in/sandbox.cpp -lseccomp -D_GNU_SOURCE
+
+
 
 clean:
 	@rm -f $(RUNNER_SCRIPT)
