@@ -1,6 +1,4 @@
 [bold][magenta]## chocolate run[/magenta][/bold]
 -> This function runs the app specified inside .chocolate.run.main.
-- Use `-o <log_file_name>` to log the entire output of the script.
 - Use `-r` to reinstall dependencies before running the project.
-- Use `-s` to run the app with `screen`.
-- Use `-t` to run tests before starting.
+
