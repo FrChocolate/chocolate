@@ -336,6 +336,10 @@ def handle_config(args):
     console.print(Pretty(get_project_config().config))
 
 
+def handle_version(args):
+    console.print('[blue]Chocolate [/blue](3.0.1-pre)')
+
+
 def export(args):
     """
     Export the project to a specified location or a default location.
@@ -360,7 +364,7 @@ def main():
 
     Parses command line arguments and executes the specified action.
     """
-    log.info("Starting Chocolate Project Manager.")
+    
     parser = argparse.ArgumentParser(
         description="Chocolate Project Manager.", add_help=False)
     parser.add_argument("action", type=str, help="Action")
@@ -385,7 +389,8 @@ def main():
         "path": handle_path,
         "ask_for": handle_ask,
         "remove": handle_remove,
-        "config": handle_config
+        "config": handle_config,
+        "version": handle_version
     }
 
     if args.action in actions or args.action == 'help':

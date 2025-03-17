@@ -193,7 +193,10 @@ chocolate reinstall
 chocolate export -o my_project.zip
 ```
 
-
+## Printing the config file
+```bash
+chocolate config
+```
 
 ## ✅ **Conclusion**
 

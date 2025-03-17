@@ -216,6 +216,11 @@ chocolate reinstall
 chocolate export -o my_project.zip
 ```
 
+## مشاهده فایل کانفیگ
+```bash
+chocolate config
+```
+
 ## ✅ **نتیجه‌گیری**
 
 مدیر پروژه Chocolate برای مدیریت تمام مراحل از راه‌اندازی پروژه تا مدیریت وابستگی‌ها و خودکارسازی سفارشی طراحی شده است.

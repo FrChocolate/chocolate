@@ -32,7 +32,7 @@ make all
 ```
 
 ## Usage
-Run the `chocolate all` command to get started.
+Run the `chocolate version` command to get started.
 
 ## Cont
 
