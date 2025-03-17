@@ -1,0 +1,8 @@
+[bold][magenta]## chocolate path[/magenta][/bold]
+-> This function is used to include or exclude a path from the project.
+- Use `include <path>` to include a path inside a project.
+- Use `exclude <path>` to exclude a path inside a project.
+
+[bold]example[/bold]
+chocolate path include assets/
+chocolate path exclude assets/db.db

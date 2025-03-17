@@ -9,8 +9,8 @@ from rich.pretty import Pretty
 try:
     from log import setup_logging, custom_print_format
     from path import Path
-    from config import ensure_length, create_zip
-    from help import ensure_help
+    from config import create_zip
+    from help import ensure_help, short_help
     import project_manager as prj
     from project_manager import CONFIG
 except ImportError:
@@ -416,7 +416,8 @@ def main():
         "remove": handle_remove,
         "config": handle_config,
         "version": handle_version,
-        "sandbox": handle_sandbox
+        "sandbox": handle_sandbox,
+        "help": lambda x:console.print(convert_dict_to_table(short_help))
     }
 
     if args.action in actions or args.action == 'help':

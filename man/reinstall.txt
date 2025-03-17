@@ -1,0 +1,2 @@
+[bold][magenta]## chocolate reinstall[/magenta][/bold]
+-> This function is used to reinstall all dependencies.

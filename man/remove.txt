@@ -1,0 +1,3 @@
+[bold][magenta]## chocolate remove[/magenta][/bold]
+-> This function removes the project configuration file.
+- Use `chocolate remove` to delete the configuration file (`.chocolate`).

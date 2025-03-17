@@ -1,0 +1,5 @@
+[bold][magenta]## chocolate sandbox[/magenta][/bold]
+-> This function runs the project in a sandbox mode.
+- Use `<memory_limit_in_MB>` to set the memory limit (use -1 for unlimited).
+- Use `<cpu_time_in_seconds>` to set the CPU time limit (use -1 for unlimited).
+- Use `<cpu_freq_in_MHz>` to set the CPU frequency (use -1 for unlimited).

@@ -1,0 +1,3 @@
+[bold][magenta]## chocolate version[/magenta][/bold]
+-> This function displays the current version of the Chocolate Project Manager.
+- Use `chocolate version` to check the version of Chocolate Project Manager.

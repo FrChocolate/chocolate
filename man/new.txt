@@ -1,0 +1,4 @@
+[bold][magenta]## chocolate new[/magenta][/bold]
+-> This function is used to create a new project.
+- Use `-n <project name>` to specify the project name.
+- Use `-m <main file.py>` to specify the main file path.

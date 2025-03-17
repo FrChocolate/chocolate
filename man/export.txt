@@ -1,0 +1,7 @@
+[bold][magenta]## chocolate export[/magenta][/bold]
+-> This function is used to export the project into a zip file.
+- Use `-o <output file>` to specify the output file.
+- Use `-a` to export the entire folder (see the attachment).
+- Use `-w` to avoid exporting the .chocolate file (not recommended).
+
+[bold]Attachment:[/bold] By default, the export function only exports the files and folders that are in the path. Run `chocolate path -h` to get help with adding or removing paths from the project.

@@ -1,0 +1,4 @@
+[bold][magenta]## chocolate ask_for[/magenta][/bold]
+-> This function manages the environment variables to be asked for during startup.
+- Use `add <env_var1> <env_var2> ...` to add environment variables to the 'ask for' list.
+- Use `remove <env_var1> <env_var2> ...` to remove environment variables from the 'ask for' list.

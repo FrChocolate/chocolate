@@ -1,0 +1,4 @@
+[bold][magenta]## chocolate flags[/magenta][/bold]
+-> This function is used to set flags for running .chocolate.run.startfile.
+- Use `flags flag1 flag2 flag3 flag4 ...` to add or overwrite flags.
+- Use `flags ""` to remove all flags.

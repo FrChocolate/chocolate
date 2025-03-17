@@ -1,0 +1,3 @@
+[bold][magenta]## chocolate config[/magenta][/bold]
+-> This function displays the current project configuration.
+- Use `chocolate config` to view the current configuration details.
