@@ -2,7 +2,7 @@
 
 
 <p align="center">
-  <img src="https://socialify.git.ci/frchocolate/chocolate/image?custom_description=A+Modern+Python+Project+Manager&description=1&font=Source+Code+Pro&forks=1&issues=1&language=1&name=1&owner=1&pattern=Transparent&pulls=1&stargazers=1&theme=Dark" alt="logo">
+  <img src="https://socialify.git.ci/frchocolate/chocolate/image?custom_description=A+Modern+Python+Project+Manager&description=1&font=Source+Code+Pro&forks=1&issues=1&language=1&logo=https%3A%2F%2Fwww.svgrepo.com%2Fdownload%2F501912%2Fchocolate.svg&name=1&owner=1&pattern=Transparent&pulls=1&stargazers=1&theme=Dark" alt="logo">
 </p>
 
 ---
