@@ -7,39 +7,41 @@ import venv
 import sys
 import subprocess
 
+CONFIG = "chocolate.json"
 p = Path()
 
 
 def get_config():
-    if '.chocolate' in p:
-        return JsonConfig('.chocolate')
+    """Receiving config from the path"""
+    if CONFIG in p:
+        return JsonConfig(CONFIG)
     return False
 
 
-def establish_project(name, start, args, **env):
-    p['.chocolate'] = {
-        "INFO": "CHOCOLATE PROJECT",
-        "name": name,
-        "created": time.time(),
-        "requirements": [],
-        "ask_for": [],
-        "exclude":[],
-        "private_env": [],
-        "run": {"startfile": start,
-                "flags": args,
-                "env": dict(**env)},
-        "actions": {}
+def setup_project(name, start):
+    """Setting up the project"""
+    p[CONFIG] = {
+        "info": {
+            "fork": "native",
+            "createdUnix": round(time.time()),
+            "name": name
+        },
+        "requirements": list(),
+        "startupEnv": list(),
+        "privateEnv": list(),
+        "exclude": list(),
+        "mainFile": start,
+        "flagsString": "",
+        "environmentVariables": dict(),
+        "actionsScript": dict()
     }
     if not os.path.exists(start):
-        open(start, '+w').write('print("Hello, Chocolate!")')
-    if not os.path.exists('modules'):
-        os.mkdir('modules')
-    if not os.path.exists('assets'):
-        os.mkdir('assets')
+        with open(start, '+wt', encoding='utf-8') as fp:
+            fp.write('print("Hello, Chocolate!")')
 
 
 class VenvManager:
-    def __init__(self, venv_dir="venv"):
+    def __init__(self, venv_dir=".venv"):
         self.venv_dir = venv_dir
         self.venv_python = os.path.join(venv_dir, "bin", "python") if os.name != "nt" else os.path.join(
             venv_dir, "Scripts", "python.exe")

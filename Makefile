@@ -1,5 +1,5 @@
 APP_DIR = chocolate_in
-PYTHON_FILE = __main__.py
+PYTHON_FILE = main.py
 RUNNER_SCRIPT = chocolate
 VENV_DIR = .venv
 SAFE_DIR = /opt/chocolate

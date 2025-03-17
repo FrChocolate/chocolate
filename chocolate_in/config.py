@@ -20,11 +20,12 @@ def create_zip(name, include, exclude):
                 continue
             for root, dirs, files in os.walk(path):
                 if any(excl in root for excl in exclude):
-                    dirs[:] = []  
+                    dirs[:] = []
                     continue
                 for file in files:
                     file_path = os.path.join(root, file)
-                    zipf.write(file_path, os.path.relpath(file_path, os.path.commonpath(include)))
+                    zipf.write(file_path, os.path.relpath(
+                        file_path, os.path.commonpath(include)))
 
 
 def ensure_folder(path):
@@ -48,7 +49,9 @@ def ensure_length(pkgs, mini, maxi):
 class JsonConfig:
     def __init__(self, name: str) -> None:
         self.name = name
-        self.config = json.loads(~Path(name))
+        self.config = ~Path(name)
+        if not isinstance(self.config, dict):
+            self.config = json.loads(self.config)
 
     def __getitem__(self, items):
         if not isinstance(items, tuple):
