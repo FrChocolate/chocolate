@@ -15,6 +15,8 @@ Chocolate Project Manager (`chocolate`) is a command-line tool for managing proj
 
 > [Read the docs](DOCSfa.md) [🇮🇷]
 
+> [Contribution Guidelines](contribute.md) [🧑‍⚕️]
+
 ## Installation
 
 ### Installtion for arch
@@ -34,7 +36,7 @@ make all
 ## Usage
 Run the `chocolate version` command to get started.
 
-## Cont
+
 
 ## License
 This project is licensed under the MIT License.
