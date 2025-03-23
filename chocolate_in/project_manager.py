@@ -41,7 +41,7 @@ def setup_project(name, start):
 
 
 class VenvManager:
-    def __init__(self, venv_dir=".venv"):
+    def __init__(self, venv_dir="venv"):
         self.venv_dir = venv_dir
         self.venv_python = os.path.join(venv_dir, "bin", "python") if os.name != "nt" else os.path.join(
             venv_dir, "Scripts", "python.exe")
@@ -135,3 +135,5 @@ def exporter(directory, output_file):
     imports = collect_imports(directory)
     export_non_builtin_imports(imports, output_file)
     print(f"Exported non-builtin imports to {output_file}")
+
+

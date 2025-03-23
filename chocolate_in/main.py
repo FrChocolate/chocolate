@@ -345,13 +345,26 @@ def export(args):
     Export the project to a specified location or a default location.
 
     Args:
-        args (argparse.Namespace): The command line arguments.
+        args (argparse.Namespace): The command line arguments.y
     """
     log.info("Exporting project to %s.",
              args.output if args.output else 'default location')
     try:
         project = get_project_config()
-        name = args.output if args.output else project['name'] + '.zip'
+        name = args.output if args.output else project['info']['name'] + '.zip'
+        req = open('requirements.txt', '+wt', encoding='utf-8')
+        req.write('\n'.join(project['requirements']))
+        req.close()
+
+        pyvenv = 'venv/bin/python'
+        script = ''
+        for i in project['environmentVariables']:
+            script += f'export {i}="{project['environmentVariables'][i]}"\n'
+        script += f'{pyvenv} -m pip install -r requirements.txt\n'
+        script += f'{pyvenv} {project["mainFile"]} {project["flagsString"]}'
+        with open('run.sh', '+w') as fp:
+            fp.write(script)
+
         create_zip(name, '.', project['exclude'])
         log.info("Export completed successfully.")
     except Exception as e:
