@@ -5,16 +5,12 @@ from rich.table import Table
 from rich.markdown import Markdown
 from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn
 from rich.pretty import Pretty
-
-try:
-    from log import setup_logging, custom_print_format
-    from path import Path
-    from config import create_zip
-    from help import ensure_help, short_help
-    import project_manager as prj
-    from project_manager import CONFIG
-except ImportError:
-    quit(1)
+from log import setup_logging, custom_print_format
+from path import Path
+from config import create_zip
+from help import ensure_help, short_help
+import project_manager as prj
+from project_manager import CONFIG
 
 console = Console()
 path = Path()
@@ -380,7 +376,7 @@ def export(args):
         pyvenv = "venv/bin/python"
         script = ""
         for i in project["environmentVariables"]:
-            if i not in project['privateEnv']:
+            if i not in project["privateEnv"]:
                 script += f'export {i}="{project['environmentVariables'][i]}"\n'
         script += f"{pyvenv} -m pip install -r requirements.txt\n"
         script += f'{pyvenv} {project["mainFile"]} {project["flagsString"]}'
