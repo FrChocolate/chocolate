@@ -26,6 +26,9 @@ Chocolate Project Manager (chocolate) is a command-line tool for managing projec
 
 ## Installation
 
+### Install compile dependencies
+> libseccomp-dev
+> build-essential
 ### Installtion for arch
 ```sh
 yay -S chocolate

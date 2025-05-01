@@ -20,7 +20,7 @@ copy-app:
 	@sudo cp -r $(APP_DIR) $(SAFE_DIR)
 	@sudo cp -r $(VENV_DIR) $(SAFE_DIR)
 	@sudo cp choco-sandbox $(INSTALL_DIR)
-	@sudo cp choco-help $(INSTALL_DIR)
+	@sudo cp choco-help $(INSTALL_D)
 	@sudo mkdir -p /usr/share/doc/chocolate
 	@sudo cp -r man/* /usr/share/doc/chocolate
 
