@@ -8,8 +8,8 @@ import datetime
 from rich import print
 
 # Create a logs directory if it doesn't exist
-if not os.path.exists('log'):
-    os.makedirs('log')
+if not os.path.exists("log"):
+    os.makedirs("log")
 
 # Fetch the username of the device
 username = getpass.getuser()
@@ -27,20 +27,20 @@ class CallbackHandler(logging.Handler):
         self.callback(log_entry)
 
 
-def setup_logging(level=logging.INFO,  print_callback=None):
+def setup_logging(level=logging.INFO, print_callback=None):
     # Create a custom logger
-    log_file = datetime.datetime.now().strftime('log/%y-%m-%d.log')
+    log_file = datetime.datetime.now().strftime("log/%y-%m-%d.log")
     logger = logging.getLogger(__name__)
     logger.setLevel(level)
 
     # Create a TimedRotatingFileHandler
     file_handler = TimedRotatingFileHandler(
-        log_file, when='midnight', interval=1, backupCount=7)
+        log_file, when="midnight", interval=1, backupCount=7
+    )
     file_handler.setLevel(level)
 
     # Create a formatter that includes the username for the file
-    file_formatter = logging.Formatter(
-        f'%(asctime)s %(levelname)s - %(message)s')
+    file_formatter = logging.Formatter(f"%(asctime)s %(levelname)s - %(message)s")
     file_handler.setFormatter(file_formatter)
 
     # Add the file handler to the logger
@@ -54,6 +54,7 @@ def setup_logging(level=logging.INFO,  print_callback=None):
         logger.addHandler(rich_handler)
 
     return logger
+
 
 # Custom print function using Rich
 

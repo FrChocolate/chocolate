@@ -21,11 +21,7 @@ def get_config():
 def setup_project(name, start):
     """Setting up the project"""
     p[CONFIG] = {
-        "info": {
-            "fork": "native",
-            "createdUnix": round(time.time()),
-            "name": name
-        },
+        "info": {"fork": "native", "createdUnix": round(time.time()), "name": name},
         "requirements": list(),
         "startupEnv": list(),
         "privateEnv": list(),
@@ -33,18 +29,21 @@ def setup_project(name, start):
         "mainFile": start,
         "flagsString": "",
         "environmentVariables": dict(),
-        "actionsScript": dict()
+        "actionsScript": dict(),
     }
     if not os.path.exists(start):
-        with open(start, '+wt', encoding='utf-8') as fp:
+        with open(start, "+wt", encoding="utf-8") as fp:
             fp.write('print("Hello, Chocolate!")')
 
 
 class VenvManager:
     def __init__(self, venv_dir="venv"):
         self.venv_dir = venv_dir
-        self.venv_python = os.path.join(venv_dir, "bin", "python") if os.name != "nt" else os.path.join(
-            venv_dir, "Scripts", "python.exe")
+        self.venv_python = (
+            os.path.join(venv_dir, "bin", "python")
+            if os.name != "nt"
+            else os.path.join(venv_dir, "Scripts", "python.exe")
+        )
 
         # Create the virtual environment if it doesn't exist
         if not os.path.exists(venv_dir):
@@ -53,20 +52,23 @@ class VenvManager:
 
     def install(self, package_name):
         """Install a package inside the virtual environment."""
-        subprocess.run([self.venv_python, "-m", "pip",
-                       "install", package_name], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        subprocess.run(
+            [self.venv_python, "-m", "pip", "install", package_name],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
 
     def run(self, file_name, flags="", env={}):
         """Run a script inside the virtual environment with optional flags."""
         command = [self.venv_python, file_name] + flags.split()
         return subprocess.run(command, check=True, env=env).returncode
-    
+
     def run_sandbox(self, file_name, flags="", env={}, memory=-1, cpu_time=-1, freq=-1):
-        command = [self.venv_python, file_name ] + flags.split()
+        command = [self.venv_python, file_name] + flags.split()
         command = " ".join(command)
         command = ["sudo", "choco-sandbox", command, memory, cpu_time, freq]
         return subprocess.run(command, check=True, env=env).returncode
-    
 
 
 def find_python_files(directory):
@@ -74,14 +76,14 @@ def find_python_files(directory):
     python_files = []
     for root, dirs, files in os.walk(directory):
         for file in files:
-            if file.endswith('.py'):
+            if file.endswith(".py"):
                 python_files.append(os.path.join(root, file))
     return python_files
 
 
 def extract_imports(file_path):
     """Extract imports from a Python file."""
-    with open(file_path, 'r', encoding='utf-8') as file:
+    with open(file_path, "r", encoding="utf-8") as file:
         try:
             tree = ast.parse(file.read())
         except SyntaxError as e:
@@ -123,10 +125,11 @@ def export_non_builtin_imports(imports, output_file):
 
     # Filter out built-in libraries and None values from the imports
     non_builtin_imports = {
-        imp for imp in imports if imp not in builtin_libraries and imp is not None}
+        imp for imp in imports if imp not in builtin_libraries and imp is not None
+    }
 
     # Write the remaining non-builtin imports to the file
-    with open(output_file, 'w', encoding='utf-8') as file:
+    with open(output_file, "w", encoding="utf-8") as file:
         for imp in sorted(non_builtin_imports):
             file.write(f"{imp}\n")
 
@@ -135,5 +138,3 @@ def exporter(directory, output_file):
     imports = collect_imports(directory)
     export_non_builtin_imports(imports, output_file)
     print(f"Exported non-builtin imports to {output_file}")
-
-

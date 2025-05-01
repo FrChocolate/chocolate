@@ -45,12 +45,12 @@ def ensure_env_variables():
     """
     log.info("Starting to ensure environment variables.")
     project = get_project_config()
-    for key in project['startupEnv']:
-        if key not in project.config['run']['env']:
+    for key in project["startupEnv"]:
+        if key not in project.config["environmentVariables"]:
             log.info("Requesting input for missing environment variable: %s", key)
             result = input().strip()
-            project.config['environmentVariables'][key] = result
-    path[CONFIG] = project.config
+            project.config["environmentVariables"][key] = result
+    project.commit()
     log.info("Environment variables have been ensured.")
 
 
@@ -84,14 +84,18 @@ def handle_new_project(args):
     if prj.get_config():
         log.critical("Project already exists.")
         log.critical(
-            "You can't create a new project because .chocolate already exists.")
+            "You can't create a new project because .chocolate already exists."
+        )
         quit(1)
     if len(args.pkgs) != 2:
         log.critical("Missing required arguments: 'main' or 'name'.")
         quit(1)
 
-    log.info("Creating a new project with name: %s and main file: %s.",
-             args.pkgs[0], args.pkgs[1])
+    log.info(
+        "Creating a new project with name: %s and main file: %s.",
+        args.pkgs[0],
+        args.pkgs[1],
+    )
     prj.setup_project(args.pkgs[0], args.pkgs[1])
     log.info("New project established successfully.")
     log.info("Project created successfully. Use `chocolate run` to start.")
@@ -111,14 +115,14 @@ def run(args):
     if args.reinstall:
         log.info("Reinstall flag detected, proceeding with reinstallation.")
         handle_reinstall()
-    env = project['environmentVariables']
-    flags = project['flagsString']
+    env = project["environmentVariables"]
+    flags = project["flagsString"]
     venv = prj.VenvManager()
     try:
-        log.info("Running the project startfile: %s.", project['mainFile'])
-        console.print(Markdown('---'))
-        venv.run(project['mainFile'], flags, env)
-        console.print(Markdown('---'))
+        log.info("Running the project startfile: %s.", project["mainFile"])
+        console.print(Markdown("---"))
+        venv.run(project["mainFile"], flags, env)
+        console.print(Markdown("---"))
         log.info("Process finished.")
 
     except Exception as e:
@@ -136,7 +140,11 @@ def handle_package_installation(packages):
     project = get_project_config()
     venv = prj.VenvManager()
 
-    with Progress(SpinnerColumn(), BarColumn(), TextColumn("[progress.percentage]{task.percentage:>3.0f}%")) as progress:
+    with Progress(
+        SpinnerColumn(),
+        BarColumn(),
+        TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+    ) as progress:
         task = progress.add_task("Processing...", total=len(packages))
         for pkg in packages:
             try:
@@ -146,9 +154,9 @@ def handle_package_installation(packages):
             else:
                 log.info("Package %s installed successfully.", pkg)
             progress.advance(task)
-            if pkg not in project.config['requirements']:
+            if pkg not in project.config["requirements"]:
                 log.info("New package added: %s.", pkg)
-                project.config['requirements'].append(pkg)
+                project.config["requirements"].append(pkg)
 
     path[CONFIG] = project.config
     log.info("All packages installed successfully.")
@@ -166,10 +174,15 @@ def handle_reinstall(args=None):
         raw_project = get_project_config().config
         venv = prj.VenvManager()
 
-        with Progress(SpinnerColumn(), BarColumn(), TextColumn("[progress.percentage]{task.percentage:>3.0f}%")) as progress:
+        with Progress(
+            SpinnerColumn(),
+            BarColumn(),
+            TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+        ) as progress:
             task = progress.add_task(
-                "Processing...", total=len(raw_project['requirements']))
-            for pkg in raw_project['requirements']:
+                "Processing...", total=len(raw_project["requirements"])
+            )
+            for pkg in raw_project["requirements"]:
                 log.info("Reinstalling package: %s.", pkg)
                 venv.install(pkg)
                 progress.advance(task)
@@ -190,32 +203,32 @@ def handle_env_action(args):
     try:
         project = get_project_config()
         raw_project = project.config
-        if args.pkgs[0] == 'list':
+        if args.pkgs[0] == "list":
             log.info("Listing all environment variables.")
-            log.info(convert_dict_to_table(project['environmentVariables']))
-        elif args.pkgs[0] == 'remove':
+            log.info(convert_dict_to_table(project["environmentVariables"]))
+        elif args.pkgs[0] == "remove":
             log.info("Removing environment keys.")
             for key in args.pkgs[1:]:
                 log.info("Removing key from environment: %s.", key)
-                raw_project['environmentVariables'].pop(key, None)
+                raw_project["environmentVariables"].pop(key, None)
             path[CONFIG] = raw_project
-        elif args.pkgs[0] == 'private':
+        elif args.pkgs[0] == "private":
             for key in args.pkgs[1:]:
-                if key in raw_project['privateEnv']:
+                if key in raw_project["privateEnv"]:
                     log.info("Making key public: %s.", key)
-                    raw_project['private_env'].remove(key)
+                    raw_project["private_env"].remove(key)
                 else:
                     log.info("Making key private: %s.", key)
-                    raw_project['privateEnv'].append(key)
+                    raw_project["privateEnv"].append(key)
             path[CONFIG] = raw_project
         else:
             log.info("Adding environment variables.")
             for env_var in args.pkgs:
-                key, value = env_var.split('=', 1)
-                if key in ['list', 'remove']:
+                key, value = env_var.split("=", 1)
+                if key in ["list", "remove"]:
                     log.critical("Invalid environment key name: %s.", key)
                     quit(1)
-                raw_project['environmentVariables'][key] = value
+                raw_project["environmentVariables"][key] = value
                 log.info("Added/edited environment variable: %s.", key)
             path[CONFIG] = raw_project
         log.info("All environment actions have been completed.")
@@ -233,7 +246,7 @@ def handle_flags(args):
     log.info("Handling flags update with values: %s.", args.pkgs)
     try:
         raw_project = get_project_config().config
-        raw_project['flagsString'] = ' '.join(args.pkgs)
+        raw_project["flagsString"] = " ".join(args.pkgs)
         log.info("Flags have been updated.")
         path[CONFIG] = raw_project
     except Exception as e:
@@ -250,20 +263,20 @@ def custom_action(args):
     log.info("Processing custom action: %s.", args.pkgs[0])
     try:
         project = get_project_config()
-        if args.pkgs[0] == 'add':
+        if args.pkgs[0] == "add":
             log.info("Adding a custom action.")
             if args.input:
                 args.pkgs.append(open(args.input).read())
-            project.config['actionsScript'][args.pkgs[1]] = args.pkgs[2]
+            project.config["actionsScript"][args.pkgs[1]] = args.pkgs[2]
             path[CONFIG] = project.config
-        elif args.pkgs[0] == 'remove':
+        elif args.pkgs[0] == "remove":
             log.info("Removing a custom action.")
-            project.config['actionsScript'].pop(args.pkgs[1])
+            project.config["actionsScript"].pop(args.pkgs[1])
             path[CONFIG] = project.config
         else:
             log.info("Executing custom actions: %s.", args.pkgs)
             for i in args.pkgs:
-                i = project['actionsScript'][i].split('\n')
+                i = project["actionsScript"][i].split("\n")
                 for j in i:
                     os.system(j)
     except Exception as e:
@@ -280,26 +293,32 @@ def handle_path(args):
     try:
         log.info("Handling path action: %s.", args.pkgs[0])
         project = get_project_config()
-        if args.pkgs[0] == 'exclude':
+        if args.pkgs[0] == "exclude":
             for path in args.pkgs[1:]:
                 log.info("Excluding path: %s.", path)
-                if path not in project['exclude']:
-                    project['exclude'].append(path)
+                if path not in project["exclude"]:
+                    project["exclude"].append(path)
             project.commit()
-        elif args.pkgs[0] == 'include':
+        elif args.pkgs[0] == "include":
             for path in args.pkgs[1:]:
                 log.info("Including path: %s.", path)
-                project['exclude'].remove(path)
+                project["exclude"].remove(path)
             project.commit()
-        elif args.pkgs[0] == 'list':
-            print('Excludes:')
-            print(', '.join(project['exclude']))
+        elif args.pkgs[0] == "list":
+            print("Excludes:")
+            print(", ".join(project["exclude"]))
     except Exception as e:
         log.critical("Error handling path action: %s", e)
 
 
 def handle_ask(args):
-    """
+    """for for_ask in project["startupEnv"]:
+        if for_ask not in env:
+            print(f"[green]Enter the {for_ask} value: ")
+            res = input()
+            project["environmentVariables", for_ask] = res
+        project.commit()
+
     Manage the list of environment variables to ask for.
 
     Args:
@@ -308,12 +327,13 @@ def handle_ask(args):
     vars = args.pkgs
     project = get_project_config()
     for i in vars:
-        if i in project['startupEnv']:
-            project['startupEnv'].remove(i)
-            log.info('%s removed from ask_for list.', i)
+        if i in project["startupEnv"]:
+            project["startupEnv"].remove(i)
+            log.info("%s removed from ask_for list.", i)
         else:
-            project['startupEnv'].append(i)
-            log.info('%s added to ask_for list.', i)
+            project["startupEnv"].append(i)
+            log.info("%s added to ask_for list.", i)
+    project.commit()
 
 
 def handle_remove(args):
@@ -337,7 +357,7 @@ def handle_config(args):
 
 
 def handle_version(args):
-    console.print('[blue]Chocolate [/blue](3.0.2-final)')
+    console.print("[blue]Chocolate [/blue](3.5.0-beta)")
 
 
 def export(args):
@@ -347,25 +367,27 @@ def export(args):
     Args:
         args (argparse.Namespace): The command line arguments.y
     """
-    log.info("Exporting project to %s.",
-             args.output if args.output else 'default location')
+    log.info(
+        "Exporting project to %s.", args.output if args.output else "default location"
+    )
     try:
         project = get_project_config()
-        name = args.output if args.output else project['info']['name'] + '.zip'
-        req = open('requirements.txt', '+wt', encoding='utf-8')
-        req.write('\n'.join(project['requirements']))
+        name = args.output if args.output else project["info"]["name"] + ".zip"
+        req = open("requirements.txt", "+wt", encoding="utf-8")
+        req.write("\n".join(project["requirements"]))
         req.close()
 
-        pyvenv = 'venv/bin/python'
-        script = ''
-        for i in project['environmentVariables']:
-            script += f'export {i}="{project['environmentVariables'][i]}"\n'
-        script += f'{pyvenv} -m pip install -r requirements.txt\n'
+        pyvenv = "venv/bin/python"
+        script = ""
+        for i in project["environmentVariables"]:
+            if i not in project['privateEnv']:
+                script += f'export {i}="{project['environmentVariables'][i]}"\n'
+        script += f"{pyvenv} -m pip install -r requirements.txt\n"
         script += f'{pyvenv} {project["mainFile"]} {project["flagsString"]}'
-        with open('run.sh', '+w') as fp:
+        with open("run.sh", "+w") as fp:
             fp.write(script)
 
-        create_zip(name, '.', project['exclude'])
+        create_zip(name, ".", project["exclude"])
         log.info("Export completed successfully.")
     except Exception as e:
         log.critical("Error during export: %s", e)
@@ -380,21 +402,26 @@ def handle_sandbox(args):
     if args.reinstall:
         log.info("Reinstall flag detected, proceeding with reinstallation.")
         handle_reinstall()
-    env = project['environmentVariables']
-    flags = project['flagsString']
+    env = project["environmentVariables"]
+    flags = project["flagsString"]
     venv = prj.VenvManager()
     if len(args.pkgs) != 3:
-        log.critical('Usage `chocolate sandbox <memory limit in MB> <cpu time in seconds> <cpu freq in MH>`, Use -1 as unlimited.')
+        log.critical(
+            "Usage `chocolate sandbox <memory limit in MB> <cpu time in seconds> <cpu freq in MH>`, Use -1 as unlimited."
+        )
         quit(1)
     try:
-        log.info("Running the project startfile: %s.", project['mainFile'])
-        console.print(Markdown('---'))
-        venv.run_sandbox(project['mainFile'], flags, env, args.pkgs[0], args.pkgs[1], args.pkgs[2])
-        console.print(Markdown('---'))
+        log.info("Running the project startfile: %s.", project["mainFile"])
+        console.print(Markdown("---"))
+        venv.run_sandbox(
+            project["mainFile"], flags, env, args.pkgs[0], args.pkgs[1], args.pkgs[2]
+        )
+        console.print(Markdown("---"))
         log.info("Process finished.")
 
     except Exception as e:
         log.critical("Project execution failed. Error: %s", e)
+
 
 def main():
     """
@@ -402,27 +429,29 @@ def main():
 
     Parses command line arguments and executes the specified action.
     """
-    
+
     parser = argparse.ArgumentParser(
-        description="Chocolate Project Manager.", add_help=False)
+        description="Chocolate Project Manager.", add_help=False
+    )
     parser.add_argument("action", type=str, help="Action")
-    parser.add_argument('-o', '--output', type=str, help="Output file path.")
-    parser.add_argument('-h', '--help', action='store_true')
-    parser.add_argument('-r', '--reinstall', action='store_true')
-    parser.add_argument('-i', '--input', required=False)
-    parser.add_argument("pkgs", nargs="*",
-                        help="Raw input after 'add' action", default=[])
+    parser.add_argument("-o", "--output", type=str, help="Output file path.")
+    parser.add_argument("-h", "--help", action="store_true")
+    parser.add_argument("-r", "--reinstall", action="store_true")
+    parser.add_argument("-i", "--input", required=False)
+    parser.add_argument(
+        "pkgs", nargs="*", help="Raw input after 'add' action", default=[]
+    )
 
     args = parser.parse_args()
 
     actions = {
-        'new': handle_new_project,
-        'add': lambda args: handle_package_installation(args.pkgs),
-        'reinstall': handle_reinstall,
-        'env': handle_env_action,
-        'flags': handle_flags,
-        'run': run,
-        'export': export,
+        "new": handle_new_project,
+        "add": lambda args: handle_package_installation(args.pkgs),
+        "reinstall": handle_reinstall,
+        "env": handle_env_action,
+        "flags": handle_flags,
+        "run": run,
+        "export": export,
         "action": custom_action,
         "path": handle_path,
         "ask_for": handle_ask,
@@ -430,10 +459,10 @@ def main():
         "config": handle_config,
         "version": handle_version,
         "sandbox": handle_sandbox,
-        "help": lambda x:console.print(convert_dict_to_table(short_help))
+        "help": lambda x: console.print(convert_dict_to_table(short_help)),
     }
 
-    if args.action in actions or args.action == 'help':
+    if args.action in actions or args.action == "help":
         ensure_help(args)
         actions[args.action](args)
     else:

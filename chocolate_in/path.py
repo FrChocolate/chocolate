@@ -22,14 +22,14 @@ class Path:
         path = os.path.join(self.base, name)
 
         if isinstance(value, bytes):
-            mode = 'wb'
+            mode = "wb"
         elif isinstance(value, str):
-            mode = 'wt'
+            mode = "wt"
         elif isinstance(value, dict):
-            mode = 'wt'
+            mode = "wt"
             value = json.dumps(value, indent=2)
         else:
-            raise ValueError(f'Unsupported type: {type(value)}')
+            raise ValueError(f"Unsupported type: {type(value)}")
 
         with open(path, mode) as fp:
             fp.write(value)
@@ -45,21 +45,21 @@ class Path:
         return self.__getattr__(item)
 
     def __repr__(self) -> str:
-        return f'<Path(base={self.base})>'
+        return f"<Path(base={self.base})>"
 
     def __str__(self) -> str:
         return self.base
 
     def __neg__(self):
         if isfile(self.base):
-            return json.load(open(self.base, 'rb'))
+            return json.load(open(self.base, "rb"))
         raise FileNotFoundError(f"File not found: {self.base}")
 
     def __invert__(self):
         if isfile(self.base):
-            mode = 'rb' if is_binary(self.base) else 'rt'
+            mode = "rb" if is_binary(self.base) else "rt"
             with open(self.base, mode) as fp:
-                if self.base.endswith('.json'):
+                if self.base.endswith(".json"):
                     return json.load(fp)
                 return fp.read()
         raise FileNotFoundError(f"File not found: {self.base}")

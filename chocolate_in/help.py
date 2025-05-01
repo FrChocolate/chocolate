@@ -3,6 +3,7 @@ from rich import print
 from rich.panel import Panel
 from rich.markdown import Markdown
 from rich import box
+
 short_help = dict(
     run="Runs the app specified in .chocolate.run.main with various options for logging and testing.",
     env="Manages environment variables, including adding, removing, and setting privacy.",
@@ -16,13 +17,11 @@ short_help = dict(
     ask_for="Manages environment variables that should be asked for during startup.",
     remove="Deletes the project configuration file (.chocolate).",
     config="Displays the current configuration of the project.",
-    version="Shows the current version of the Chocolate Project Manager."
+    version="Shows the current version of the Chocolate Project Manager.",
 )
-
-
 
 
 def ensure_help(args):
     if args.help:
-        subprocess.run(['choco-help', args.action])
+        subprocess.run(["choco-help", args.action])
         quit()
