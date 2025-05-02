@@ -3,7 +3,8 @@ import argparse
 from rich.console import Console
 from rich.table import Table
 from rich.markdown import Markdown
-from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn
+from rich.live import Live
+from rich.panel import Panel
 from rich.pretty import Pretty
 from log import setup_logging, custom_print_format
 from path import Path
@@ -135,57 +136,24 @@ def handle_package_installation(packages):
     log.info("Starting the package installation process for packages: %s.", packages)
     project = get_project_config()
     venv = prj.VenvManager()
-
-    with Progress(
-        SpinnerColumn(),
-        BarColumn(),
-        TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
-    ) as progress:
-        task = progress.add_task("Processing...", total=len(packages))
+    res = Panel("", title="Output")
+    with Live(res, refresh_per_second=4) as live:
+        val = ""
         for pkg in packages:
             try:
-                venv.install(pkg)
+                for i in venv.install(pkg):
+                    val += i + "\n"
+                    res.renderable = val
             except Exception as err:
                 log.error("Problem while installing package %s: %s", pkg, err)
             else:
                 log.info("Package %s installed successfully.", pkg)
-            progress.advance(task)
             if pkg not in project.config["requirements"]:
                 log.info("New package added: %s.", pkg)
                 project.config["requirements"].append(pkg)
 
     path[CONFIG] = project.config
     log.info("All packages installed successfully.")
-
-
-def handle_reinstall(args=None):
-    """
-    Handle the reinstallation of all required packages.
-
-    Args:
-        args (argparse.Namespace, optional): The command line arguments.
-    """
-    log.info("Starting reinstallation process.")
-    try:
-        raw_project = get_project_config().config
-        venv = prj.VenvManager()
-
-        with Progress(
-            SpinnerColumn(),
-            BarColumn(),
-            TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
-        ) as progress:
-            task = progress.add_task(
-                "Processing...", total=len(raw_project["requirements"])
-            )
-            for pkg in raw_project["requirements"]:
-                log.info("Reinstalling package: %s.", pkg)
-                venv.install(pkg)
-                progress.advance(task)
-
-        log.info("Reinstallation process completed successfully.")
-    except Exception as e:
-        log.critical("Reinstallation failed. Error: %s", e)
 
 
 def handle_env_action(args):
@@ -353,7 +321,7 @@ def handle_config(args):
 
 
 def handle_version(args):
-    console.print("[blue]Chocolate [/blue](3.5.0-beta)")
+    console.print("[blue]Chocolate [/blue](3.5.2-beta)")
 
 
 def export(args):
@@ -387,6 +355,11 @@ def export(args):
         log.info("Export completed successfully.")
     except Exception as e:
         log.critical("Error during export: %s", e)
+
+
+def handle_reinstall(*_):
+    project = get_project_config()
+    handle_package_installation(project["requirements"])
 
 
 def handle_sandbox(args):

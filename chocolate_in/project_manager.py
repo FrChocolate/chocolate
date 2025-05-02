@@ -51,13 +51,22 @@ class VenvManager:
             venv.create(venv_dir, with_pip=True)
 
     def install(self, package_name):
-        """Install a package inside the virtual environment."""
-        subprocess.run(
-            [self.venv_python, "-m", "pip", "install", package_name],
-            check=True,
+        process = subprocess.Popen(
+            [self.venv_python, "-u", "-m", "pip", "install", package_name],
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            bufsize=1,  # Line buffered
         )
+        if process.stdout:
+            for line in iter(process.stdout.readline, ""):
+                yield line.strip()
+        elif process.stderr:
+            for line in iter(process.stderr.readline, ""):
+                yield line.strip()
+        process.wait()
+        if process.returncode != 0:
+            raise subprocess.CalledProcessError(process.returncode, process.args)
 
     def run(self, file_name, flags="", env={}):
         """Run a script inside the virtual environment with optional flags."""
