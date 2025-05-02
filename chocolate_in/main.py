@@ -321,7 +321,7 @@ def handle_config(args):
 
 
 def handle_version(args):
-    console.print("[blue]Chocolate [/blue](3.5.2-beta)")
+    console.print("[blue]Chocolate [/blue](4.0.0)")
 
 
 def export(args):
