@@ -109,20 +109,31 @@ class Sftp:
             return {}
 
     def exec(self, cmd):
-        logging.info(f"Fetching hashes from remote with command: {cmd}")
+        logging.info(f"Executing remote command: {cmd}")
         try:
-            stdin, stdout, stderr = self.ssh.exec_command(cmd)
-            stdout = stdout.read().decode().split("\n")
-            err = stderr.read().decode()
-            if err:
-                yield err
+            channel = self.ssh.get_transport()
+            if not channel:
+                logging.error("SSH transport is not available.")
+                return
+            channel = channel.open_session()
+            channel.exec_command(cmd)
 
-            
-            for i in stdout:
-                yield i
-            
+            while True:
+                if channel.recv_ready():
+                    output = channel.recv(1024).decode()
+                    for line in output.splitlines():
+                        yield line
+
+                if channel.recv_stderr_ready():
+                    error_output = channel.recv_stderr(1024).decode()
+                    for line in error_output.splitlines():
+                        yield line
+
+                if channel.exit_status_ready():
+                    break
+            logging.info("Remote script execution completed.")
         except Exception as e:
-            logging.error(f"Error fetching remote hashes: {e}")
+            logging.error(f"Failed to execute remote command: {e}")
             
 
     def _mkdir_remote(self, path):
