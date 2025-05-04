@@ -9,6 +9,7 @@
 <h4 align="center">
 Chocolate Project Manager (chocolate) is a command-line tool for managing projects with virtual environments, dependencies, and environment variables.
 </h4>
+<h4 align="center">🔥🔥 Now with ssh auto deployment support!</h4>
 
 
 

@@ -394,41 +394,58 @@ def handle_sandbox(args):
     except Exception as e:
         log.critical("Project execution failed. Error: %s", e)
 
+def handle_ssh(args):
+    project = get_project_config()
+    vals = args.pkgs
+    if len(vals) != 4:
+        log.critical('Wrong usage. use chocolate ssh --help')
+    
+    project['sshHost'] = vals[0]
+    project['sshPort'] = int(vals[1])
+    project['sshUsername'] = vals[2]
+    project['sshPassword'] = vals[3]
+    log.info('Done.')
+
+
 def handle_sync(args):
     project = get_project_config()
-    if not (ip:=project['sshHost']) or not (username:=project['sshUsername']) or not (password:=project['sshPassword']):
-        log.critical('SSH server details are incomplete.')
+    if (
+        not (ip := project["sshHost"])
+        or not (username := project["sshUsername"])
+        or not (password := project["sshPassword"])
+        or not (port := project["sshPort"])
+    ):
+        log.critical("SSH server details are incomplete.")
         quit(1)
     make_executer()
-    client = Sftp(ip, username, password)
-    client.sync(project['info', 'name'])
-    log.info('Running...')
-    
+    client = Sftp(ip, username, password, port)
+    client.sync(project["info", "name"])
+    log.info("Running...")
+
     res = Panel("", title="Ssh Output")
     with Live(res, refresh_per_second=4) as live:
-        txt = ''
-        for i in client.run(project['info']['name']):
-            txt += i+'\n'
+        txt = ""
+        for i in client.run(project["info"]["name"]):
+            txt += i + "\n"
             res.renderable = txt
-    
+
 
 def make_executer():
     project = get_project_config()
-    deps = "\n".join(project['requirements'])
-    env = '\n'.join([f'{i}={j}' for i,j in project['environmentVariables']])
-    flags = project['flagsString']
-    with open('.env', '+w') as fp:
+    deps = "\n".join(project["requirements"])
+    env = "\n".join([f"{i}={j}" for i, j in project["environmentVariables"]])
+    flags = project["flagsString"]
+    with open(".env", "+w") as fp:
         fp.write(env)
-    with open('.flags', '+w') as fp:
+    with open(".flags", "+w") as fp:
         fp.write(flags)
-    with open('requirements.txt', '+w') as fp:
+    with open("requirements.txt", "+w") as fp:
         fp.write(deps)
-    with open('run.sh', '+w') as fp:
-        fp.write(executer.format(project['mainFile']))
-    with open('hash.sh', '+w') as fp:
+    with open("run.sh", "+w") as fp:
+        fp.write(executer.format(project["mainFile"]))
+    with open("hash.sh", "+w") as fp:
         fp.write(hashfind)
-    log.info('Exported.')
-    
+    log.info("Exported.")
 
 
 def main():
@@ -467,7 +484,8 @@ def main():
         "config": handle_config,
         "version": handle_version,
         "sandbox": handle_sandbox,
-        "sync":handle_sync,
+        "sync": handle_sync,
+        "ssh": handle_ssh,
         "help": lambda x: console.print(convert_dict_to_table(short_help)),
     }
 

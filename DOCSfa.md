@@ -45,6 +45,19 @@ chocolate run
 chocolate run --reinstall
 ```
 
+## **💻 یکسان سازی با سرور**
+
+```bash
+chocolate sync
+```
+
+### تغییر مشخصات سرور:
+
+```bash
+chocolate ssh <Hostname> <SSHPort> <SSHUsername> <SSHPassword>
+```
+
+
 ## 📦 **مدیریت بسته‌ها**
 
 ### نصب بسته‌ها:

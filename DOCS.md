@@ -41,6 +41,19 @@ chocolate run
 chocolate run --reinstall
 ```
 
+## 💻 **Sync with ssh server**
+
+### Sync files:
+
+```bash
+chocolate sync
+```
+
+### Change SSH creds:
+
+```bash
+chocolate ssh <Hostname> <SSHPort> <SSHUsername> <SSHPassword>
+```
 
 
 ## 📦 **Managing Packages**

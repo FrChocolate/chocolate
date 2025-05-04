@@ -5,7 +5,10 @@ import json
 import os
 from rich import print
 import zipfile
+from log import setup_logging
 
+
+log = setup_logging()
 
 def normalize_path(path):
     """Normalize the path to a standard format."""
@@ -47,6 +50,7 @@ def ensure_length(pkgs, mini, maxi):
         quit(1)
 
 
+
 class JsonConfig:
     def __init__(self, name: str) -> None:
         self.name = name
@@ -66,5 +70,6 @@ class JsonConfig:
         Path()[self.name] = self.config
 
     def __setitem__(self, key, value):
+        log.info(f'CONFIG: Set {key} to {value}')
         self.config[key] = value
         self.commit()

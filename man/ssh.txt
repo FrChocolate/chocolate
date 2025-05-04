@@ -1,0 +1,4 @@
+[bold][magenta]## chocolate ssh[/magenta][/bold]
+-> This function adds server details to config.
+- Use `chocolate config` to view the current configuration details and change the ssh server details for connection.
+- Or use chocolate ssh <serverHost> <serverPort> <serverUsername> <serverPassword> alternativly.

@@ -30,9 +30,10 @@ def setup_project(name, start):
         "flagsString": "",
         "environmentVariables": dict(),
         "actionsScript": dict(),
-        "sshHost":None,
-        "sshUsername":None,
-        "sshPassword":None
+        "sshHost": None,
+        "sshUsername": None,
+        "sshPassword": None,
+        "sshPort": None,
     }
     if not os.path.exists(start):
         with open(start, "+wt", encoding="utf-8") as fp:

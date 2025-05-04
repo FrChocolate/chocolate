@@ -1,0 +1,4 @@
+[bold][magenta]## chocolate sync[/magenta][/bold]
+-> This function syncs all codes into your ssh server.
+- Use `chocolate config` to view the current configuration details and change the ssh server details for connection.
+- Or use chocolate ssh <serverHost> <serverPort> <serverUsername> <serverPassword> alternativly.
