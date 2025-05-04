@@ -1,0 +1,3 @@
+[bold][magenta]## chocolate cmd <commands>[/magenta][/bold]
+-> This function runs command on ssh server.
+

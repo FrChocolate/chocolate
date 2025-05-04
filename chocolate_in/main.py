@@ -1,5 +1,6 @@
 import os
 import argparse
+import sys
 from paramiko import sftp
 from rich.console import Console
 from rich.table import Table
@@ -433,7 +434,7 @@ def handle_sync(args):
 def make_executer():
     project = get_project_config()
     deps = "\n".join(project["requirements"])
-    env = "\n".join([f"{i}={j}" for i, j in project["environmentVariables"]])
+    env = "\n".join([f"{i}={j}" for i, j in project["environmentVariables"].items()])
     flags = project["flagsString"]
     with open(".env", "+w") as fp:
         fp.write(env)
@@ -447,6 +448,26 @@ def make_executer():
         fp.write(hashfind)
     log.info("Exported.")
 
+
+def handle_cmd(args):
+    project = get_project_config()
+    if (
+        not (ip := project["sshHost"])
+        or not (username := project["sshUsername"])
+        or not (password := project["sshPassword"])
+        or not (port := project["sshPort"])
+    ):
+        log.critical("SSH server details are incomplete.")
+        quit(1)
+    
+    client = Sftp(ip, username, password, port)
+    
+    res = Panel("", title="Ssh Output")
+    with Live(res, refresh_per_second=4) as live:
+        txt = ""
+        for i in client.exec(' '.join(sys.argv[2:])):
+            txt += i + "\n"
+            res.renderable = txt
 
 def main():
     """
@@ -486,6 +507,7 @@ def main():
         "sandbox": handle_sandbox,
         "sync": handle_sync,
         "ssh": handle_ssh,
+        "cmd": handle_cmd,
         "help": lambda x: console.print(convert_dict_to_table(short_help)),
     }
 

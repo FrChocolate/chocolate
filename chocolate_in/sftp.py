@@ -108,6 +108,23 @@ class Sftp:
             logging.error(f"Error fetching remote hashes: {e}")
             return {}
 
+    def exec(self, cmd):
+        logging.info(f"Fetching hashes from remote with command: {cmd}")
+        try:
+            stdin, stdout, stderr = self.ssh.exec_command(cmd)
+            stdout = stdout.read().decode().split("\n")
+            err = stderr.read().decode()
+            if err:
+                yield err
+
+            
+            for i in stdout:
+                yield i
+            
+        except Exception as e:
+            logging.error(f"Error fetching remote hashes: {e}")
+            
+
     def _mkdir_remote(self, path):
         path = path.replace("\\", "/")
         cmd = f'mkdir -p "{path}"'
