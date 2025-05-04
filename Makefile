@@ -12,7 +12,7 @@ create-venv:
 
 install-deps:
 	@$(VENV_DIR)/bin/pip install --upgrade pip
-	@$(VENV_DIR)/bin/pip install rich pytest
+	@$(VENV_DIR)/bin/pip install rich pytest paramiko
 
 copy-app:
 	@sudo rm -rf $(SAFE_DIR)

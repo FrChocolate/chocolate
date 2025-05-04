@@ -1,5 +1,6 @@
 import os
 import argparse
+from paramiko import sftp
 from rich.console import Console
 from rich.table import Table
 from rich.markdown import Markdown
@@ -12,6 +13,8 @@ from config import create_zip
 from help import ensure_help, short_help
 import project_manager as prj
 from project_manager import CONFIG
+from sftp import Sftp
+from template import executer, hashfind
 
 console = Console()
 path = Path()
@@ -321,7 +324,7 @@ def handle_config(args):
 
 
 def handle_version(args):
-    console.print("[blue]Chocolate [/blue](4.0.0)")
+    console.print("[blue]Chocolate [/blue](4.0.2-beta)")
 
 
 def export(args):
@@ -391,6 +394,42 @@ def handle_sandbox(args):
     except Exception as e:
         log.critical("Project execution failed. Error: %s", e)
 
+def handle_sync(args):
+    project = get_project_config()
+    if not (ip:=project['sshHost']) or not (username:=project['sshUsername']) or not (password:=project['sshPassword']):
+        log.critical('SSH server details are incomplete.')
+        quit(1)
+    make_executer()
+    client = Sftp(ip, username, password)
+    client.sync(project['info', 'name'])
+    log.info('Running...')
+    
+    res = Panel("", title="Ssh Output")
+    with Live(res, refresh_per_second=4) as live:
+        txt = ''
+        for i in client.run(project['info']['name']):
+            txt += i+'\n'
+            res.renderable = txt
+    
+
+def make_executer():
+    project = get_project_config()
+    deps = "\n".join(project['requirements'])
+    env = '\n'.join([f'{i}={j}' for i,j in project['environmentVariables']])
+    flags = project['flagsString']
+    with open('.env', '+w') as fp:
+        fp.write(env)
+    with open('.flags', '+w') as fp:
+        fp.write(flags)
+    with open('requirements.txt', '+w') as fp:
+        fp.write(deps)
+    with open('run.sh', '+w') as fp:
+        fp.write(executer.format(project['mainFile']))
+    with open('hash.sh', '+w') as fp:
+        fp.write(hashfind)
+    log.info('Exported.')
+    
+
 
 def main():
     """
@@ -428,6 +467,7 @@ def main():
         "config": handle_config,
         "version": handle_version,
         "sandbox": handle_sandbox,
+        "sync":handle_sync,
         "help": lambda x: console.print(convert_dict_to_table(short_help)),
     }
 
