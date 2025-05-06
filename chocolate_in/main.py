@@ -341,20 +341,7 @@ def export(args):
     try:
         project = get_project_config()
         name = args.output if args.output else project["info"]["name"] + ".zip"
-        req = open("requirements.txt", "+wt", encoding="utf-8")
-        req.write("\n".join(project["requirements"]))
-        req.close()
-
-        pyvenv = "venv/bin/python"
-        script = ""
-        for i in project["environmentVariables"]:
-            if i not in project["privateEnv"]:
-                script += f'export {i}="{project['environmentVariables'][i]}"\n'
-        script += f"{pyvenv} -m pip install -r requirements.txt\n"
-        script += f'{pyvenv} {project["mainFile"]} {project["flagsString"]}'
-        with open("run.sh", "+w") as fp:
-            fp.write(script)
-
+        make_executer()
         create_zip(name, ".", project["exclude"])
         log.info("Export completed successfully.")
     except Exception as e:
@@ -420,7 +407,7 @@ def handle_sync(args):
         quit(1)
     make_executer()
     client = Sftp(ip, username, password, port)
-    client.sync(project["info", "name"])
+    client.sync(project["info", "name"], project['exclude'])
     log.info("Running...")
 
     res = Panel("", title="Ssh Output")
@@ -446,7 +433,7 @@ def make_executer():
         fp.write(executer.format(project["mainFile"]))
     with open("hash.sh", "+w") as fp:
         fp.write(hashfind)
-    log.info("Exported.")
+    log.info("chocolate-free project is ready.")
 
 
 def handle_cmd(args):

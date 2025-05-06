@@ -148,14 +148,14 @@ class Sftp:
         except Exception as e:
             logging.error(f"Failed to mkdir {path}: {e}")
 
-    def sync(self, dest_folder):
+    def sync(self, dest_folder, not_sync=[]):
         logging.info(f"Syncing current directory to {dest_folder}")
         logging.info("Getting hashes from server.")
         hashes = self.get_hashes(dest_folder)
 
         for root, dirs, files in os.walk("."):
             logging.debug(f"Walking through directory: {root}")
-            dirs[:] = [d for d in dirs if d not in ("log", "venv")]
+            dirs[:] = [d for d in dirs if d not in ("log", "venv", *not_sync)]
             for filename in files:
                 local_path = os.path.join(root, filename)
                 rel_path = os.path.relpath(local_path, ".")
