@@ -155,7 +155,7 @@ class Sftp:
 
         for root, dirs, files in os.walk("."):
             logging.debug(f"Walking through directory: {root}")
-            dirs[:] = [d for d in dirs if d not in ("logs", "venv")]
+            dirs[:] = [d for d in dirs if d not in ("log", "venv")]
             for filename in files:
                 local_path = os.path.join(root, filename)
                 rel_path = os.path.relpath(local_path, ".")
@@ -174,7 +174,6 @@ class Sftp:
                     logging.info(f"Uploaded {rel_path} -> {remote_path}")
                 except Exception as e:
                     logging.error(f"Failed to upload {rel_path}: {e}")
-
         logging.info("Sync completed.")
 
     def close(self):
